@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WORKOUT_ANT — Нормативы</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a1a1a;color:#ffffff;min-height:100vh}
+
+/* NAV */
+.nav{background:#111111;border-bottom:3px solid #FFE600;padding:0 24px;display:flex;align-items:center;gap:4px;height:60px}
+.nav-logo{display:flex;flex-direction:column;justify-content:center;margin-right:24px;white-space:nowrap;line-height:1;text-decoration:none}
+.nav-logo-wa{font-size:24px;font-weight:900;color:#FFE600;letter-spacing:-2px;font-style:italic}
+.nav-logo-txt{font-size:7px;font-weight:800;color:#FFE600;letter-spacing:3px;text-transform:uppercase;margin-top:-2px}
+.nav-btn{background:none;border:none;color:#aaaaaa;cursor:pointer;padding:8px 14px;border-radius:8px;font-size:14px;font-weight:500;transition:all .15s}
+.nav-btn:hover{background:#2e2e2e;color:#ffffff}
+.nav-btn.active{background:#FFE600;color:#000000;font-weight:700}
+
+/* PAGES */
+.page{display:none;padding:24px;max-width:1200px;margin:0 auto}
+.page.active{display:block}
+
+/* CARDS */
+.card{background:#242424;border-radius:12px;padding:20px;margin-bottom:16px}
+.card-title{font-size:15px;font-weight:600;color:#FFE600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* SUMMARY ROW */
+.summary-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.summary-card{background:#242424;border-radius:10px;padding:16px;text-align:center;border:1px solid #333333}
+.summary-val{font-size:32px;font-weight:800;color:#ffffff}
+.summary-label{font-size:11px;color:#666666;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+thead th{background:#111111;padding:10px 12px;text-align:left;font-size:11px;font-weight:600;color:#666666;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+tbody td{padding:10px 12px;border-bottom:1px solid #2e2e2e;font-size:13px;vertical-align:middle}
+tbody tr{background:#242424}
+tbody tr:hover td{background:#2e2e2e;cursor:pointer}
+tbody tr.row-up{border-left:3px solid #22c55e}
+tbody tr.row-down{border-left:3px solid #ef4444}
+tbody tr.row-same{border-left:3px solid #FFE600}
+tbody tr.row-new{border-left:3px solid #aaaaaa}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:700}
+.badge-up{background:#14532d;color:#4ade80}
+.badge-down{background:#450a0a;color:#f87171}
+.badge-same{background:#2a2700;color:#FFE600}
+.badge-new{background:#333333;color:#ffffff}
+
+/* DELTA */
+.delta-up{color:#4ade80;font-size:12px}
+.delta-down{color:#f87171;font-size:12px}
+.delta-none{color:#666666;font-size:12px}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:12px;color:#aaaaaa;font-weight:500}
+input,select{background:#111111;border:1px solid #444444;border-radius:8px;padding:10px 12px;color:#ffffff;font-size:14px;outline:none;width:100%}
+input:focus,select:focus{border-color:#FFE600;box-shadow:0 0 0 2px rgba(255,230,0,.15)}
+input[type=number]{appearance:textfield}
+
+.exercise-block{background:#111111;border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid #333333}
+.exercise-title{font-size:13px;font-weight:700;color:#FFE600;margin-bottom:10px}
+.toggle-row{display:flex;border-radius:8px;overflow:hidden;border:1px solid #444444;margin-bottom:10px;width:fit-content}
+.toggle-opt{background:#111111;border:none;color:#666666;cursor:pointer;padding:6px 14px;font-size:12px;font-weight:600;transition:all .15s}
+.toggle-opt.active{background:#FFE600;color:#000000}
+.input-row{display:flex;align-items:center;gap:10px}
+.input-row input{max-width:100px}
+.input-unit{font-size:12px;color:#666666;white-space:nowrap}
+
+/* BUTTONS */
+.btn{padding:10px 22px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s}
+.btn-primary{background:#FFE600;color:#000000}
+.btn-primary:hover{background:#e6cf00}
+.btn-sm{padding:5px 11px;font-size:12px;border-radius:6px}
+.btn-ghost{background:#242424;border:1px solid #444444;color:#aaaaaa}
+.btn-ghost:hover{border-color:#FFE600;color:#FFE600}
+.btn-danger{background:#dc2626;color:#fff}
+.btn-danger:hover{background:#b91c1c}
+.btn-green{background:#16a34a;color:#fff}
+.btn-green:hover{background:#15803d}
+
+/* SEARCH */
+.search-row{display:flex;gap:12px;margin-bottom:18px;align-items:center}
+.search-row input{flex:1}
+.search-row select{max-width:180px}
+
+/* PROFILE */
+.profile-header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.avatar{width:52px;height:52px;border-radius:50%;background:#FFE600;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#000000;flex-shrink:0}
+.profile-name{font-size:22px;font-weight:700}
+.profile-sub{font-size:13px;color:#666666;margin-top:2px}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.stat-box{background:#111111;border-radius:10px;padding:12px;text-align:center;border:1px solid #333333}
+.stat-val{font-size:24px;font-weight:800;color:#ffffff}
+.stat-lbl{font-size:10px;color:#666666;margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+.stat-delta{font-size:11px;margin-top:5px}
+
+.chart-wrap{position:relative;height:220px}
+
+.history-row td{font-size:12px;padding:8px 10px}
+.history-row th{font-size:10px;padding:8px 10px}
+
+/* EMPTY */
+.empty{text-align:center;padding:56px 20px;color:#555555}
+.empty-icon{font-size:48px;margin-bottom:14px}
+.empty p{font-size:14px}
+
+/* ALERT */
+.alert{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.alert-ok{background:#14532d;color:#4ade80;border-left:3px solid #22c55e}
+.alert-err{background:#450a0a;color:#f87171;border-left:3px solid #ef4444}
+
+/* TOP CONTROLS */
+.top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.top-row h2{font-size:18px;font-weight:700}
+
+/* BACK */
+.back-btn{background:none;border:none;color:#FFE600;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:4px;margin-bottom:14px;padding:0}
+.back-btn:hover{color:#ffffff}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#242424;border-radius:14px;padding:24px;width:100%;max-width:400px;border:1px solid #444444}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .form-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .summary-row{grid-template-columns:repeat(2,1fr)}
+  .nav-logo-wa{font-size:18px}
+}
+
+.no-data{color:#555555;font-size:13px;font-style:italic}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;background:#2a2700;color:#FFE600;margin-left:6px}
+
+/* Sortable headers */
+th[data-sort]{cursor:pointer;user-select:none}
+th[data-sort]:hover{color:#FFE600}
+th[data-sort]::after{content:' ⇅';opacity:.4}
+th[data-sort].asc::after{content:' ↑';opacity:1;color:#FFE600}
+th[data-sort].desc::after{content:' ↓';opacity:1;color:#FFE600}
+
+/* AUTOCOMPLETE */
+.ac-wrap{position:relative}
+.ac-selected{display:flex;align-items:center;gap:8px;background:#111111;border:1px solid #22c55e;border-radius:8px;padding:8px 12px;font-size:14px;color:#ffffff}
+.ac-selected .ac-clear{background:none;border:none;color:#666666;cursor:pointer;font-size:16px;margin-left:auto;line-height:1}
+.ac-selected .ac-clear:hover{color:#f87171}
+.ac-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#242424;border:1px solid #444444;border-radius:10px;z-index:50;max-height:260px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.7)}
+.ac-item{padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:14px;border-bottom:1px solid #111111}
+.ac-item:last-child{border-bottom:none}
+.ac-item:hover,.ac-item.focused{background:#2e2e2e}
+.ac-item .ac-av{width:30px;height:30px;border-radius:50%;background:#FFE600;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#000000;flex-shrink:0}
+.ac-item .ac-name{font-weight:600}
+.ac-item .ac-group{font-size:11px;color:#666666;margin-top:1px}
+.ac-item .ac-last{font-size:11px;color:#555555;margin-left:auto;white-space:nowrap}
+.ac-empty{padding:16px;text-align:center;color:#555555;font-size:13px}
+
+/* SESSION MODE */
+.session-header{background:#242424;border-radius:12px;padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border:1px solid #333333}
+.session-progress{flex:1;min-width:200px}
+.session-progress-bar{background:#111111;border-radius:20px;height:8px;margin-top:6px;overflow:hidden}
+.session-progress-fill{background:linear-gradient(90deg,#FFE600,#22c55e);height:100%;border-radius:20px;transition:width .4s}
+.session-progress-text{font-size:12px;color:#666666;margin-top:4px}
+
+.student-row-session{background:#242424;border-radius:10px;margin-bottom:8px;overflow:hidden;border:1px solid transparent;transition:border-color .15s}
+.student-row-session.done{border-color:#22c55e44}
+.student-row-session.active-session{border-color:#FFE600}
+.srs-header{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer}
+.srs-header:hover{background:#2e2e2e}
+.srs-num{font-size:12px;color:#555555;width:24px;text-align:right;flex-shrink:0}
+.srs-av{width:36px;height:36px;border-radius:50%;background:#FFE600;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#000000;flex-shrink:0}
+.srs-info{flex:1;min-width:0}
+.srs-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srs-meta{font-size:11px;color:#666666;margin-top:2px}
+.srs-status{flex-shrink:0}
+.srs-body{display:none;padding:0 16px 16px;border-top:1px solid #333333}
+.srs-body.open{display:block}
+.srs-exercises{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:12px}
+.srs-ex{background:#111111;border-radius:8px;padding:10px 12px;border:1px solid #333333}
+.srs-ex-title{font-size:11px;font-weight:700;color:#FFE600;margin-bottom:6px}
+.srs-ex input{background:#242424;border:1px solid #444444;border-radius:6px;padding:6px 10px;color:#ffffff;font-size:15px;font-weight:700;width:80px;outline:none}
+.srs-ex input:focus{border-color:#FFE600}
+.srs-ex .srs-unit{font-size:11px;color:#666666;margin-left:6px}
+.srs-type-toggle{display:flex;gap:4px;margin-bottom:6px}
+.srs-type-btn{padding:3px 8px;border:1px solid #444444;border-radius:5px;background:#111111;color:#666666;font-size:10px;cursor:pointer;font-weight:600}
+.srs-type-btn.active{background:#2a2700;border-color:#FFE600;color:#FFE600}
+.srs-actions{display:flex;gap:10px;margin-top:14px;align-items:center}
+.badge-done{background:#14532d;color:#4ade80;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-skip{background:#2e2e2e;color:#555555;padding:3px 10px;border-radius:20px;font-size:11px;border:1px solid #333333}
+
+/* STUDENTS SEARCH */
+.students-search-row{display:flex;gap:12px;margin-bottom:14px;align-items:center}
+.students-search-row input{flex:1}
+
+/* PROFILE MINI-CHARTS */
+.ex-chart-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+.ex-chart-card{background:#242424;border-radius:12px;padding:14px;border:1px solid #333333}
+.ex-chart-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ex-chart-title{font-size:13px;font-weight:700;color:#FFE600}
+.ex-type-pill{font-size:10px;padding:2px 7px;border-radius:10px;background:#2a2700;color:#FFE600;font-weight:600}
+.ex-chart-nums{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.ex-chart-val{font-size:28px;font-weight:800;color:#ffffff}
+.ex-chart-unit{font-size:12px;color:#555555}
+.ex-chart-delta{font-size:13px;font-weight:700}
+.ex-mini-wrap{position:relative;height:90px}
+.ex-no-data{color:#444444;font-size:12px;text-align:center;padding:20px 0}
+.trend-up{color:#4ade80}
+.trend-down{color:#f87171}
+.trend-flat{color:#FFE600}
+
+/* TRAINER FIELDS */
+.trainer-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.trainer-pill{display:inline-flex;align-items:center;gap:5px;background:#2a2700;border-radius:8px;padding:4px 10px;font-size:12px;color:#FFE600}
+.accepted-pill{display:inline-flex;align-items:center;gap:5px;background:#2e2e2e;border-radius:8px;padding:4px 10px;font-size:12px;color:#aaaaaa;border:1px solid #333333}
+
+/* PROFILE META ROW */
+.profile-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+/* TRAINERS PAGE */
+.trainer-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px}
+.trainer-card{background:#242424;border-radius:14px;padding:20px;border:1px solid #333333;cursor:pointer;transition:border-color .15s,transform .1s}
+.trainer-card:hover{border-color:#FFE600;transform:translateY(-1px)}
+.trainer-card.active-filter{border-color:#FFE600;background:#1e1c00}
+.tc-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.tc-av{width:48px;height:48px;border-radius:50%;background:#FFE600;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#000000;flex-shrink:0}
+.tc-name{font-size:16px;font-weight:700}
+.tc-role{font-size:12px;color:#666666;margin-top:2px}
+.tc-stats{display:flex;gap:16px}
+.tc-stat{text-align:center}
+.tc-stat-val{font-size:22px;font-weight:800;color:#ffffff}
+.tc-stat-lbl{font-size:10px;color:#666666;text-transform:uppercase;letter-spacing:.4px}
+.tc-actions{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #333333}
+
+/* DASHBOARD TRAINER FILTER CHIP */
+.trainer-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.trainer-chip{padding:5px 14px;border-radius:20px;border:1px solid #444444;background:#242424;color:#aaaaaa;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;white-space:nowrap}
+.trainer-chip:hover{border-color:#FFE600;color:#FFE600}
+.trainer-chip.selected{background:#2a2700;border-color:#FFE600;color:#FFE600;font-weight:700}
+.trainer-chip.all-chip.selected{background:#FFE600;color:#000000;border-color:#FFE600}
+/* ── LOGIN SCREEN ──────────────────────────────────────── */
+.login-overlay{position:fixed;inset:0;background:#111111;z-index:9999;display:flex;align-items:flex-start;justify-content:center;flex-direction:column;overflow-y:auto;padding:20px 0}
+.login-box{background:#1a1a1a;border:1px solid #333;border-radius:16px;padding:28px 24px;width:calc(100% - 32px);max-width:400px;text-align:center;margin:auto}
+.login-logo-wa{font-size:36px;font-weight:900;color:#FFE600;letter-spacing:-3px;font-style:italic}
+.login-logo-txt{font-size:9px;font-weight:800;color:#FFE600;letter-spacing:4px;margin-bottom:28px}
+.login-title{font-size:18px;font-weight:700;margin-bottom:24px;color:#ffffff}
+.login-role-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.login-role-btn{background:#242424;border:2px solid #333;border-radius:10px;color:#aaaaaa;cursor:pointer;padding:16px 8px;font-size:13px;font-weight:600;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.login-role-btn .role-icon{font-size:22px}
+.login-role-btn:hover{border-color:#FFE600;color:#FFE600}
+.login-role-btn.selected{border-color:#FFE600;background:#2a2700;color:#FFE600}
+.login-input-row{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.login-err{color:#f87171;font-size:13px;min-height:18px;margin-bottom:8px}
+.login-hint{font-size:11px;color:#555;margin-top:12px}
+.role-badge{display:inline-flex;align-items:center;gap:6px;background:#2a2700;border:1px solid #FFE600;border-radius:20px;padding:4px 12px;font-size:12px;color:#FFE600;font-weight:700}
+.role-badge.trainer-badge{background:#14532d;border-color:#22c55e;color:#4ade80}
+/* ── EXPORT PARENT BUTTON ─ */
+.btn-share{background:#2a2700;border:1px solid #FFE600;color:#FFE600;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.btn-share:hover{background:#FFE600;color:#000}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="#" onclick="showPage('dashboard')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 54" style="height:32px;display:block"><text x="0" y="40" font-family="Arial Black,Impact,sans-serif" font-weight="900" font-style="italic" font-size="46" fill="#FFE600" letter-spacing="-2">WA</text><text x="3" y="52" font-family="Arial,sans-serif" font-weight="800" font-size="9" fill="#FFE600" letter-spacing="4">WORKOUT_ANT</text></svg></a>
+  <button class="nav-btn active" onclick="showPage('dashboard')">Дашборд</button>
+  <button class="nav-btn" onclick="showPage('session')" style="background:#FFE600;color:#000;font-weight:700">⚡ Тестирование</button>
+  <button class="nav-btn" onclick="showPage('add-result')">+ Один результат</button>
+  <button class="nav-btn" onclick="showPage('students')">Ученики</button>
+  <button class="nav-btn" id="nav-trainers" onclick="showPage('trainers')">Тренеры</button>
+  <button class="nav-btn" id="nav-settings" onclick="openModal('modal-settings')" style="display:none" title="Настройки">⚙️</button>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+    <div id="nav-role-badge"></div>
+    <button class="nav-btn" onclick="authLogout()" style="color:#f87171;font-size:13px" title="Выйти">↩ Выйти</button>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <div class="top-row">
+    <h2>Обзор учеников</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <select id="dash-sort" onchange="renderDashboard()" style="max-width:200px">
+        <option value="progress">Сортировка: по прогрессу</option>
+        <option value="name">Сортировка: по имени</option>
+        <option value="date">Сортировка: по дате теста</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" onclick="showPage('add-result')">+ Добавить результат</button>
+    </div>
+  </div>
+  <div class="search-row">
+    <input id="dash-search" placeholder="🔍 Поиск по имени..." oninput="renderDashboard()">
+  </div>
+  <div class="trainer-filter-row" id="dash-trainer-chips"></div>
+  <div class="summary-row" id="summary-row"></div>
+  <div id="milestones-card" style="display:none;margin-bottom:16px"></div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div id="dashboard-table-wrap"></div>
+  </div>
+</div>
+
+<!-- SESSION MODE -->
+<div id="page-session" class="page">
+  <div class="top-row">
+    <h2>⚡ Режим тестирования</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <select id="sess-group" onchange="renderSession()" style="max-width:200px">
+        <option value="">Все группы</option>
+      </select>
+      <input type="date" id="sess-date" onchange="renderSession()" style="max-width:160px">
+      <label style="font-size:13px;color:#aaaaaa;display:flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="checkbox" id="sess-hide-done" onchange="renderSession()" style="width:auto;accent-color:#FFE600">
+        Скрыть уже протестированных
+      </label>
+    </div>
+  </div>
+  <div id="session-progress-wrap"></div>
+  <div id="session-list"></div>
+</div>
+
+<!-- ADD RESULT -->
+<div id="page-add-result" class="page">
+  <div class="top-row"><h2>Добавить результат</h2></div>
+  <div id="add-result-alert"></div>
+  <div class="card">
+    <form id="result-form" onsubmit="submitResult(event)">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Ученик — начните вводить имя</label>
+          <div class="ac-wrap" id="ac-wrap">
+            <input type="text" id="ac-input" placeholder="🔍 Поиск по имени..." autocomplete="off"
+              oninput="acOnInput()" onfocus="acOnFocus()" onkeydown="acOnKey(event)">
+            <div class="ac-dropdown" id="ac-dropdown" style="display:none"></div>
+          </div>
+          <div id="ac-chip" style="display:none"></div>
+          <input type="hidden" id="f-student">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Дата тестирования</label>
+          <input type="date" id="f-date" required>
+        </div>
+      </div>
+
+      <!-- PULLUPS -->
+      <div class="exercise-block">
+        <div class="exercise-title">💪 Подтягивания</div>
+        <div class="toggle-row">
+          <button type="button" class="toggle-opt active" onclick="setToggle('pullup','pullup',this)">Обычные</button>
+          <button type="button" class="toggle-opt" onclick="setToggle('pullup','australian',this)">Австралийские</button>
+          <button type="button" class="toggle-opt" onclick="setToggle('pullup','skip',this)">Не тестировали</button>
+        </div>
+        <div class="input-row" id="pullup-input">
+          <input type="number" id="f-pullup" min="0" placeholder="0">
+          <span class="input-unit">повторений</span>
+        </div>
+        <input type="hidden" id="f-pullup-type" value="pullup">
+      </div>
+
+      <!-- PUSHUPS -->
+      <div class="exercise-block">
+        <div class="exercise-title">🤸 Отжимания</div>
+        <div class="toggle-row">
+          <button type="button" class="toggle-opt active" onclick="setToggle('pushup','pushup',this)">Обычные</button>
+          <button type="button" class="toggle-opt" onclick="setToggle('pushup','knee',this)">С колен</button>
+          <button type="button" class="toggle-opt" onclick="setToggle('pushup','skip',this)">Не тестировали</button>
+        </div>
+        <div class="input-row" id="pushup-input">
+          <input type="number" id="f-pushup" min="0" placeholder="0">
+          <span class="input-unit">повторений</span>
+        </div>
+        <input type="hidden" id="f-pushup-type" value="pushup">
+      </div>
+
+      <!-- ABS -->
+      <div class="exercise-block">
+        <div class="exercise-title">🔥 Пресс за 30 секунд</div>
+        <div class="input-row">
+          <input type="number" id="f-abs" min="0" placeholder="0">
+          <span class="input-unit">повторений за 30 сек</span>
+        </div>
+      </div>
+
+      <!-- JUMPROPE -->
+      <div class="exercise-block">
+        <div class="exercise-title">🪢 Прыжки на скакалке</div>
+        <div class="toggle-row">
+          <button type="button" class="toggle-opt active" onclick="setToggle('jumprope','count',this)">Количество прыжков</button>
+          <button type="button" class="toggle-opt" onclick="setToggle('jumprope','skip',this)">Не тестировали</button>
+        </div>
+        <div class="input-row" id="jumprope-input">
+          <input type="number" id="f-jumprope" min="0" placeholder="0">
+          <span class="input-unit">прыжков</span>
+        </div>
+        <input type="hidden" id="f-jumprope-type" value="count">
+      </div>
+
+      <!-- LONG JUMP -->
+      <div class="exercise-block">
+        <div class="exercise-title">🦘 Прыжок в длину</div>
+        <div class="toggle-row">
+          <button type="button" class="toggle-opt active" onclick="setToggle('longjump','cm',this)">Замерить</button>
+          <button type="button" class="toggle-opt" onclick="setToggle('longjump','skip',this)">Не тестировали</button>
+        </div>
+        <div class="input-row" id="longjump-input">
+          <input type="number" id="f-longjump" min="0" placeholder="0">
+          <span class="input-unit">см</span>
+        </div>
+        <input type="hidden" id="f-longjump-type" value="cm">
+      </div>
+
+      <div class="form-grid" style="margin-top:8px">
+        <div class="form-group">
+          <label class="form-label">Кто принимал норматив</label>
+          <select id="f-accepted-by">
+            <option value="">— выбрать тренера —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Заметки (необязательно)</label>
+          <input type="text" id="f-notes" placeholder="Например: хорошая техника...">
+        </div>
+      </div>
+
+      <div style="margin-top:20px;display:flex;gap:12px">
+        <button type="submit" class="btn btn-primary">💾 Сохранить результат</button>
+        <button type="button" class="btn btn-ghost" onclick="resetForm()">Очистить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- STUDENTS -->
+<div id="page-students" class="page">
+  <div class="top-row">
+    <h2>Список учеников</h2>
+    <button class="btn btn-primary btn-sm" onclick="openAddStudent()">+ Добавить ученика</button>
+  </div>
+  <div id="students-alert"></div>
+  <div class="students-search-row">
+    <input id="students-search" placeholder="🔍 Поиск по имени, группе или тренеру..." oninput="renderStudents()">
+    <select id="students-group-filter" onchange="renderStudents()" style="max-width:180px">
+      <option value="">Все группы</option>
+    </select>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div id="students-table-wrap"></div>
+  </div>
+</div>
+
+<!-- STUDENT PROFILE -->
+<div id="page-profile" class="page">
+  <button class="back-btn" onclick="showPage('dashboard')">← Назад к дашборду</button>
+  <div id="profile-content"></div>
+</div>
+
+<!-- TRAINERS -->
+<div id="page-trainers" class="page">
+  <div class="top-row">
+    <h2>Тренеры</h2>
+    <button class="btn btn-primary btn-sm" onclick="openAddTrainer()">+ Добавить тренера</button>
+  </div>
+  <div id="trainers-alert"></div>
+  <div id="trainer-cards-wrap"></div>
+</div>
+
+<!-- ADD STUDENT MODAL -->
+<div class="modal-overlay" id="modal-add-student">
+  <div class="modal">
+    <h3>Новый ученик</h3>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Имя ученика</label>
+      <input type="text" id="new-student-name" placeholder="Например: Иван Петров" maxlength="60">
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Дата рождения</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="number" id="new-student-dob-d" placeholder="ДД" min="1" max="31" style="width:68px" oninput="updateGroupPreview()">
+        <input type="number" id="new-student-dob-m" placeholder="ММ" min="1" max="12" style="width:68px" oninput="updateGroupPreview()">
+        <input type="number" id="new-student-dob-y" placeholder="ГГГГ" min="1990" max="2022" style="width:90px" oninput="updateGroupPreview()">
+      </div>
+      <div id="group-preview" style="font-size:12px;color:#FFE600;margin-top:6px;min-height:16px"></div>
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Тренер (необязательно)</label>
+      <select id="new-student-trainer">
+        <option value="">— выбрать тренера —</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-student')">Отмена</button>
+      <button class="btn btn-primary" onclick="saveNewStudent()">Добавить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD TRAINER MODAL -->
+<div class="modal-overlay" id="modal-add-trainer">
+  <div class="modal">
+    <h3 id="trainer-modal-title">Новый тренер</h3>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Имя тренера</label>
+      <input type="text" id="new-trainer-name" placeholder="Например: Сергей Михайлович" maxlength="80">
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">Специализация (необязательно)</label>
+      <input type="text" id="new-trainer-role" placeholder="Например: Гимнастика, ОФП" maxlength="80">
+    </div>
+    <input type="hidden" id="editing-trainer-id">
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-trainer')">Отмена</button>
+      <button class="btn btn-primary" onclick="saveTrainer()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal">
+    <h3 id="modal-confirm-title">Подтверждение</h3>
+    <p id="modal-confirm-text" style="color:#aaaaaa;font-size:14px;margin-bottom:4px"></p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-confirm')">Отмена</button>
+      <button class="btn btn-danger" id="modal-confirm-btn">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== SUPABASE =====================
+const SUPA_URL='https://pvdsfwprueyiopzqiunk.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2ZHNmd3BydWV5aW9wenFpdW5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NTUwMjksImV4cCI6MjA5NzUzMTAyOX0.u-KcxYVrGSqK9w7yOryxDRuy-WOYgfndbXrDWDYM8Z8';
+const _H={apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`,'Content-Type':'application/json'};
+async function _get(t,q=''){const r=await fetch(`${SUPA_URL}/rest/v1/${t}?${q}`,{headers:_H});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function _post(t,d){const r=await fetch(`${SUPA_URL}/rest/v1/${t}`,{method:'POST',headers:{..._H,Prefer:'return=representation'},body:JSON.stringify(d)});if(!r.ok){const e=await r.text();throw new Error(e);}return r.json();}
+async function _patch(t,q,d){const r=await fetch(`${SUPA_URL}/rest/v1/${t}?${q}`,{method:'PATCH',headers:{..._H,Prefer:'return=representation'},body:JSON.stringify(d)});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function _del(t,q){const r=await fetch(`${SUPA_URL}/rest/v1/${t}?${q}`,{method:'DELETE',headers:_H});if(!r.ok)throw new Error(await r.text());}
+
+let _students=[],_trainers=[],_records=[];
+function _ns(s){return{id:s.id,name:s.name,dob:s.dob||'',trainer:s.trainer||'',clientCode:s.client_code||''};}
+function _nr(r){return{id:r.id,studentId:r.student_id,date:r.date,acceptedBy:r.accepted_by||'',notes:r.notes||'',exercises:r.exercises||{}};}
+
+function showLoading(on){
+  let el=document.getElementById('app-loading');
+  if(!el){el=document.createElement('div');el.id='app-loading';el.innerHTML='<div style="text-align:center"><div style="font-size:32px;font-weight:900;color:#FFE600;letter-spacing:-2px;font-style:italic;margin-bottom:8px">WA</div><div style="color:#aaaaaa;font-size:14px">Загрузка данных...</div></div>';el.style.cssText='position:fixed;inset:0;background:#111111;z-index:99999;display:flex;align-items:center;justify-content:center';document.body.appendChild(el);}
+  el.style.display=on?'flex':'none';
+}
+async function loadAll(){
+  showLoading(true);
+  try{
+    const[st,tr,rc]=await Promise.all([_get('students','select=*'),_get('trainers','select=*'),_get('records','select=*&order=date')]);
+    _students=st.map(_ns);_trainers=tr;_records=rc.map(_nr);
+  }finally{showLoading(false);}
+}
+
+const db={
+  get students(){return _students},
+  get records(){return _records},
+  get trainers(){return _trainers},
+
+  async addTrainer(name,role){
+    const id=Date.now().toString(36)+Math.random().toString(36).slice(2);
+    const tr={id,name,role:role||''};
+    await _post('trainers',tr);_trainers.push(tr);return tr;
+  },
+  async updateTrainer(id,name,role){
+    await _patch('trainers',`id=eq.${id}`,{name,role:role||''});
+    const i=_trainers.findIndex(t=>t.id===id);if(i>=0)_trainers[i]={..._trainers[i],name,role:role||''};
+  },
+  async deleteTrainer(id){
+    await _del('trainers',`id=eq.${id}`);
+    _trainers=_trainers.filter(t=>t.id!==id);
+    _students=_students.map(s=>s.trainer===id?{...s,trainer:''}:s);
+    await _patch('students',`trainer=eq.${id}`,{trainer:''}).catch(()=>{});
+  },
+  getTrainerName(id){return _trainers.find(t=>t.id===id)?.name||id||''},
+
+  async addStudent(name,dob,trainer){
+    const id=Date.now().toString(36)+Math.random().toString(36).slice(2);
+    await _post('students',{id,name,dob:dob||'',trainer:trainer||'',client_code:''});
+    const st={id,name,dob:dob||'',trainer:trainer||'',clientCode:''};
+    _students.push(st);return st;
+  },
+  async deleteStudent(id){
+    await _del('students',`id=eq.${id}`);
+    _students=_students.filter(s=>s.id!==id);
+    _records=_records.filter(r=>r.studentId!==id);
+  },
+  async addRecord(rec){
+    await _post('records',{id:rec.id,student_id:rec.studentId,date:rec.date,accepted_by:rec.acceptedBy||'',notes:rec.notes||'',exercises:rec.exercises});
+    _records.push(rec);_records.sort((a,b)=>a.date.localeCompare(b.date));
+  },
+  async deleteRecord(id){
+    await _del('records',`id=eq.${id}`);
+    _records=_records.filter(r=>r.id!==id);
+  },
+  getStudentRecords(sid){return _records.filter(r=>r.studentId===sid).sort((a,b)=>a.date.localeCompare(b.date))},
+  getLatest(sid){const r=this.getStudentRecords(sid);return r[r.length-1]||null},
+  getPrev(sid){const r=this.getStudentRecords(sid);return r[r.length-2]||null},
+
+  async ensureCode(s){
+    if(!s.clientCode){
+      const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      s.clientCode=Array.from({length:6},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+      await _patch('students',`id=eq.${s.id}`,{client_code:s.clientCode}).catch(()=>{});
+    }
+    return s.clientCode;
+  }
+};
+
+// ===================== NAV =====================
+// ===================== NAV =====================
+function showPage(id, extra){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const map={dashboard:0,session:1,'add-result':2,students:3,trainers:4};
+  if(map[id]!==undefined) document.querySelectorAll('.nav-btn')[map[id]].classList.add('active');
+
+  if(id==='dashboard') renderDashboard();
+  else if(id==='session') initSession(extra);
+  else if(id==='add-result') initAddResultPage(extra);
+  else if(id==='students') renderStudents();
+  else if(id==='trainers') renderTrainers();
+  else if(id==='profile' && extra) renderProfile(extra);
+}
+
+// ===================== HELPERS =====================
+function fmtDate(d){ if(!d) return '—'; const dt=new Date(d+'T00:00:00'); return dt.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}) }
+function initials(name){ return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) }
+function calcAge(dob){
+  if(!dob) return null;
+  const b=new Date(dob), n=new Date();
+  let age=n.getFullYear()-b.getFullYear();
+  if(n.getMonth()<b.getMonth()||(n.getMonth()===b.getMonth()&&n.getDate()<b.getDate())) age--;
+  return age;
+}
+function calcGroup(dob){
+  const a=calcAge(dob);
+  if(a===null) return '';
+  if(a<8)   return 'до 8 лет';
+  if(a<=9)  return '8-9 лет';
+  if(a<=11) return '10-11 лет';
+  if(a<=13) return '12-13 лет';
+  if(a<=15) return '14-15 лет';
+  return '16+ лет';
+}
+function studentGroup(s){ return s.dob ? calcGroup(s.dob) : (s.group||''); }
+function fmtDob(dob){
+  if(!dob) return '';
+  const [y,m,d]=dob.split('-');
+  return d+'.'+m+'.'+y;
+}
+function getDobFromInputs(){
+  const d=document.getElementById('new-student-dob-d').value.trim();
+  const m=document.getElementById('new-student-dob-m').value.trim();
+  const y=document.getElementById('new-student-dob-y').value.trim();
+  if(!d||!m||!y||y.length<4) return '';
+  return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+}
+function updateGroupPreview(){
+  const dob=getDobFromInputs();
+  const el=document.getElementById('group-preview');
+  if(!dob){ el.textContent=''; return; }
+  const a=calcAge(dob);
+  if(a===null||a<0||a>100){ el.textContent=''; return; }
+  el.textContent=`→ ${a} лет · группа: ${calcGroup(dob)}`;
+}
+function exLabel(key,type){
+  const map={
+    pullup:{pullup:'Подтягивания',australian:'Австралийские подт.'},
+    pushup:{pushup:'Отжимания',knee:'Отж. с колен'},
+    abs:{reps:'Пресс 30 сек'},
+    jumprope:{count:'Скакалка'},
+    longjump:{cm:'Прыжок в длину'}
+  };
+  return (map[key]&&map[key][type])||'—';
+}
+function exUnit(key){ return key==='longjump'?'см':'пов' }
+
+// ===================== PROGRESS =====================
+// Type difficulty hierarchy: higher = harder
+const TYPE_LEVEL={pullup:2,australian:1,pushup:2,knee:1};
+function typeLevel(t){ return TYPE_LEVEL[t]||1; }
+
+function getProgressScore(latest,prev){
+  if(!latest||!prev) return null;
+  const keys=['pullup','pushup','abs','jumprope','longjump'];
+  let total=0,count=0;
+  keys.forEach(k=>{
+    const lv=latest.exercises[k],pv=prev.exercises[k];
+    if(!lv||!pv||lv.type==='skip'||pv.type==='skip') return;
+    // type changed (e.g. australian → pullup)
+    if(lv.type!==pv.type){
+      const diff=typeLevel(lv.type)-typeLevel(pv.type);
+      if(diff!==0){ total+=diff>0?1:-1; count++; }
+      return;
+    }
+    if(lv.value==null||pv.value==null) return;
+    const delta=lv.value-pv.value;
+    total+=delta>0?1:delta<0?-1:0;
+    count++;
+  });
+  return count>0?total/count:null;
+}
+
+function progressBadge(latest,prev){
+  if(!latest) return '<span class="badge badge-new">Нет данных</span>';
+  if(!prev) return '<span class="badge badge-new">Новый</span>';
+  const score=getProgressScore(latest,prev);
+  if(score===null) return '<span class="badge badge-new">Недостаточно данных</span>';
+  if(score>0.2) return '<span class="badge badge-up">▲ Растёт</span>';
+  if(score<-0.2) return '<span class="badge badge-down">▼ Снижается</span>';
+  return '<span class="badge badge-same">● Стабильно</span>';
+}
+
+function rowClass(latest,prev){
+  if(!latest||!prev) return 'row-new';
+  const score=getProgressScore(latest,prev);
+  if(score===null) return 'row-new';
+  if(score>0.2) return 'row-up';
+  if(score<-0.2) return 'row-down';
+  return 'row-same';
+}
+
+function deltaHtml(latest,prev,key){
+  if(!latest||!prev) return '<span class="delta-none">—</span>';
+  const lv=latest.exercises[key],pv=prev.exercises[key];
+  if(!lv||!pv||lv.type==='skip'||pv.type==='skip')
+    return '<span class="delta-none">—</span>';
+  if(lv.type!==pv.type){
+    const diff=typeLevel(lv.type)-typeLevel(pv.type);
+    if(diff>0) return '<span class="delta-up" title="Перешёл на более сложный вид">↑ вид</span>';
+    if(diff<0) return '<span class="delta-down" title="Перешёл на более лёгкий вид">↓ вид</span>';
+  }
+  if(lv.value==null||pv.value==null) return '<span class="delta-none">—</span>';
+  const d=lv.value-pv.value;
+  if(d>0) return `<span class="delta-up">+${d}</span>`;
+  if(d<0) return `<span class="delta-down">${d}</span>`;
+  return '<span class="delta-none">0</span>';
+}
+
+const TYPE_SHORT={australian:'авст.',knee:'с кол.'};
+function exVal(rec,key){
+  if(!rec) return '—';
+  const e=rec.exercises[key];
+  if(!e||e.type==='skip'||e.value==null) return '<span class="no-data">—</span>';
+  const u=key==='longjump'?'см':'';
+  const tag=TYPE_SHORT[e.type]?`<span style="font-size:10px;color:#FFE600;margin-left:3px">${TYPE_SHORT[e.type]}</span>`:'';
+  return `${e.value}${u}${tag}`;
+}
+
+// ===================== DASHBOARD =====================
+let dashSortDir={};
+let dashTrainerFilter='';
+
+function setDashTrainer(tid){
+  dashTrainerFilter=tid;
+  renderDashboard();
+}
+
+// ── PULLUP MILESTONES ──────────────────────────────────────────────────────
+function calcExMilestones(exKey, targetType){
+  // Students who achieved ≥1 rep of targetType (e.g. 'pullup' or 'pushup')
+  return db.students.map(s=>{
+    const recs=db.getStudentRecords(s.id);
+    const success=recs.find(r=>{const e=r.exercises[exKey];return e&&e.type===targetType&&e.value>=1;});
+    if(!success) return null;
+    const start=recs[0];
+    const days=start?Math.round((new Date(success.date)-new Date(start.date))/(864e5)):0;
+    return {student:s,achievedDate:success.date,startDate:start?.date,days,firstVal:success.exercises[exKey].value};
+  }).filter(Boolean).sort((a,b)=>a.days-b.days);
+}
+
+let milestonesOpen=false;
+function toggleMilestones(){
+  milestonesOpen=!milestonesOpen;
+  renderMilestonesCard(calcExMilestones('pullup','pullup'), calcExMilestones('pushup','pushup'));
+}
+
+function milestonesTable(list){
+  if(!list.length) return '<div class="empty" style="padding:20px"><p>Нет данных</p></div>';
+  const avg=Math.round(list.reduce((s,m)=>s+m.days,0)/list.length);
+  const rows=list.map(m=>`
+    <tr>
+      <td style="cursor:pointer;color:#FFE600;font-weight:600" onclick="openProfile('${m.student.id}')">${m.student.name}</td>
+      <td>${studentGroup(m.student)||'—'}</td>
+      <td style="color:#4ade80;font-weight:700">${m.firstVal} пов</td>
+      <td>${m.startDate?fmtDate(m.startDate):'—'}</td>
+      <td style="color:#FFE600">${fmtDate(m.achievedDate)}</td>
+      <td>${m.days===0?'В первый день':`${m.days} дн.`}</td>
+    </tr>`).join('');
+  return `<div style="font-size:12px;color:#aaaaaa;margin-bottom:8px">Среднее время: <b style="color:#FFE600">${avg} дн.</b> · ${list.length} чел.</div>
+    <table><thead><tr>
+      <th>Ученик</th><th>Группа</th><th>Первый результат</th><th>Начало занятий</th><th>Дата достижения</th><th>Времени заняло</th>
+    </tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function renderMilestonesCard(pullups, pushups){
+  const card=document.getElementById('milestones-card');
+  if(!milestonesOpen){ card.style.display='none'; return; }
+  card.style.display='block';
+  card.innerHTML=`
+    <div class="card" style="border-left:3px solid #FFE600">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="card-title" style="margin-bottom:0">🏆 Освоили упражнения с нуля</div>
+        <button class="btn btn-ghost btn-sm" onclick="toggleMilestones()">✕ Закрыть</button>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:#FFE600;margin-bottom:10px">💪 Подтягивания (обычные) — ${pullups.length} чел.</div>
+      ${milestonesTable(pullups)}
+      <div style="font-size:14px;font-weight:700;color:#22c55e;margin:18px 0 10px">🤸 Отжимания (обычные) — ${pushups.length} чел.</div>
+      ${milestonesTable(pushups)}
+    </div>`;
+}
+
+function renderDashboard(){
+  // trainer chips
+  const trainers=db.trainers;
+  const chipsEl=document.getElementById('dash-trainer-chips');
+  if(trainers.length){
+    const chips=[
+      `<span class="trainer-chip all-chip ${!dashTrainerFilter?'selected':''}" onclick="setDashTrainer('')">Все тренеры</span>`,
+      ...trainers.map(t=>`<span class="trainer-chip ${dashTrainerFilter===t.id?'selected':''}" onclick="setDashTrainer('${t.id}')">${t.name}</span>`)
+    ].join('');
+    chipsEl.innerHTML=chips;
+    chipsEl.style.display='flex';
+  } else {
+    chipsEl.innerHTML=''; chipsEl.style.display='none';
+  }
+
+  const allStudents=db.students;
+  let students=allStudents;
+  if(dashTrainerFilter){
+    const trainerName=db.getTrainerName(dashTrainerFilter);
+    students=allStudents.filter(s=>{
+      if(s.trainer===dashTrainerFilter) return true; // приписан к тренеру
+      return db.getStudentRecords(s.id).some(r=>r.acceptedBy===trainerName); // тестировался у тренера
+    });
+  }
+  const latest_all={},prev_all={};
+  students.forEach(s=>{ latest_all[s.id]=db.getLatest(s.id); prev_all[s.id]=db.getPrev(s.id); });
+
+  // summary
+  const tested_week=students.filter(s=>{
+    const l=latest_all[s.id];
+    if(!l) return false;
+    const d=new Date(l.date+'T00:00:00'),now=new Date();
+    return (now-d)/(1000*60*60*24)<=7;
+  }).length;
+  const improving=students.filter(s=>{
+    const score=getProgressScore(latest_all[s.id],prev_all[s.id]);
+    return score!==null&&score>0.2;
+  }).length;
+  const attention=students.filter(s=>{
+    const score=getProgressScore(latest_all[s.id],prev_all[s.id]);
+    return score!==null&&score<-0.2;
+  }).length;
+
+  const mPullup=calcExMilestones('pullup','pullup');
+  const mPushup=calcExMilestones('pushup','pushup');
+  document.getElementById('summary-row').innerHTML=`
+    <div class="summary-card"><div class="summary-val">${students.length}</div><div class="summary-label">Всего учеников</div></div>
+    <div class="summary-card"><div class="summary-val" style="color:#4ade80">${improving}</div><div class="summary-label">Прогрессируют</div></div>
+    <div class="summary-card"><div class="summary-val" style="color:#f87171">${attention}</div><div class="summary-label">Нужно внимание</div></div>
+    <div class="summary-card"><div class="summary-val" style="color:#fbbf24">${tested_week}</div><div class="summary-label">Тестировали на неделе</div></div>
+    <div class="summary-card" style="cursor:pointer;border-color:#FFE60044" onclick="toggleMilestones()">
+      <div class="summary-val" style="color:#FFE600">${mPullup.length}</div>
+      <div class="summary-label">💪 Освоили подтяг.</div>
+    </div>
+    <div class="summary-card" style="cursor:pointer;border-color:#22c55e44" onclick="toggleMilestones()">
+      <div class="summary-val" style="color:#22c55e">${mPushup.length}</div>
+      <div class="summary-label">🤸 Освоили отжим.</div>
+    </div>
+  `;
+  renderMilestonesCard(mPullup, mPushup);
+
+  if(!students.length){
+    document.getElementById('dashboard-table-wrap').innerHTML=`<div class="empty"><div class="empty-icon">👥</div><p>Нет учеников. <a href="#" onclick="showPage('students')" style="color:#FFE600">Добавьте первого ученика</a></p></div>`;
+    return;
+  }
+
+  const search=(document.getElementById('dash-search').value||'').toLowerCase();
+  const sortBy=document.getElementById('dash-sort').value;
+
+  let list=students.filter(s=>s.name.toLowerCase().includes(search));
+
+  list.sort((a,b)=>{
+    if(sortBy==='name') return a.name.localeCompare(b.name,'ru');
+    if(sortBy==='date'){
+      const da=latest_all[a.id]?.date||'0000-00-00';
+      const db2=latest_all[b.id]?.date||'0000-00-00';
+      return db2.localeCompare(da);
+    }
+    // progress
+    const sa=getProgressScore(latest_all[a.id],prev_all[a.id])??-99;
+    const sb=getProgressScore(latest_all[b.id],prev_all[b.id])??-99;
+    return sb-sa;
+  });
+
+  const rows=list.map(s=>{
+    const l=latest_all[s.id],p=prev_all[s.id];
+    const recs=db.getStudentRecords(s.id).length;
+    const trainerName=s.trainer?db.getTrainerName(s.trainer):'';
+    return `<tr class="${rowClass(l,p)}" onclick="showPage('profile','${s.id}')" style="cursor:pointer">
+      <td>
+        <b>${s.name}</b>${studentGroup(s)?`<span class="tag">${studentGroup(s)}</span>`:''}
+        ${trainerName?`<div style="font-size:11px;color:#666666;margin-top:1px">👤 ${trainerName}</div>`:''}
+      </td>
+      <td>${l?fmtDate(l.date):'<span class="no-data">нет</span>'}</td>
+      <td>${exVal(l,'pullup')} ${deltaHtml(l,p,'pullup')}</td>
+      <td>${exVal(l,'pushup')} ${deltaHtml(l,p,'pushup')}</td>
+      <td>${exVal(l,'abs')} ${deltaHtml(l,p,'abs')}</td>
+      <td>${exVal(l,'jumprope')} ${deltaHtml(l,p,'jumprope')}</td>
+      <td>${exVal(l,'longjump')} ${deltaHtml(l,p,'longjump')}</td>
+      <td>${progressBadge(l,p)}</td>
+      <td style="color:#666666">${recs}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('dashboard-table-wrap').innerHTML=`
+    <table>
+      <thead><tr>
+        <th>Ученик</th>
+        <th>Последний тест</th>
+        <th>💪 Подтяг.</th>
+        <th>🤸 Отжим.</th>
+        <th>🔥 Пресс</th>
+        <th>🪢 Скакалка</th>
+        <th>🦘 Прыжок</th>
+        <th>Прогресс</th>
+        <th>Тестов</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+// ===================== STUDENTS PAGE =====================
+function renderStudents(){
+  const allStudents=db.students;
+  // populate group filter
+  const groups=[...new Set(allStudents.map(s=>studentGroup(s)).filter(Boolean))].sort();
+  const gsel=document.getElementById('students-group-filter');
+  const prevG=gsel.value;
+  gsel.innerHTML='<option value="">Все группы</option>';
+  groups.forEach(g=>{ const o=document.createElement('option'); o.value=g; o.textContent=g; if(g===prevG) o.selected=true; gsel.appendChild(o); });
+
+  const q=(document.getElementById('students-search').value||'').toLowerCase();
+  const gf=gsel.value;
+  let students=allStudents.filter(s=>{
+    if(gf && studentGroup(s)!==gf) return false;
+    if(!q) return true;
+    const trainerName=s.trainer?db.getTrainerName(s.trainer).toLowerCase():'';
+    return s.name.toLowerCase().includes(q)||(studentGroup(s)||'').toLowerCase().includes(q)||trainerName.includes(q);
+  });
+
+  if(!allStudents.length){
+    document.getElementById('students-table-wrap').innerHTML=`<div class="empty"><div class="empty-icon">➕</div><p>Список пустой. Добавьте первого ученика.</p></div>`;
+    return;
+  }
+  if(!students.length){
+    document.getElementById('students-table-wrap').innerHTML=`<div class="empty"><div class="empty-icon">🔍</div><p>Никого не найдено по запросу «${q}»</p></div>`;
+    return;
+  }
+
+  const rows=students.map(s=>{
+    const recs=db.getStudentRecords(s.id).length;
+    const latest=db.getLatest(s.id);
+    const trainerName=s.trainer?db.getTrainerName(s.trainer):'';
+    return `<tr>
+      <td>
+        <b>${s.name}</b>${studentGroup(s)?`<span class="tag">${studentGroup(s)}</span>`:''}
+        ${trainerName?`<div style="font-size:11px;color:#666666;margin-top:2px">👤 ${trainerName}</div>`:''}
+      </td>
+      <td style="color:#666666">${latest?fmtDate(latest.date):'—'}</td>
+      <td style="color:#666666">${recs} тест${recs===1?'':recs>=2&&recs<=4?'а':'ов'}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="showPage('profile','${s.id}')">Профиль</button>
+        <button class="btn btn-ghost btn-sm" style="margin-left:6px" onclick="preAddResult('${s.id}')">+ Результат</button>
+        <button class="btn btn-sm btn-danger" style="margin-left:6px" data-admin-only onclick="confirmDeleteStudent('${s.id}','${s.name.replace(/'/g,"\\'")}')">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+  document.getElementById('students-table-wrap').innerHTML=`
+    <table>
+      <thead><tr><th>Имя</th><th>Последний тест</th><th>Тестирований</th><th>Действия</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function populateTrainerSelects(){
+  const trainers=db.trainers;
+  const opts='<option value="">— без тренера —</option>'+trainers.map(t=>`<option value="${t.id}">${t.name}${t.role?` · ${t.role}`:''}</option>`).join('');
+  const targets=['new-student-trainer','f-accepted-by'];
+  targets.forEach(id=>{ const el=document.getElementById(id); if(el){ el.innerHTML=opts; } });
+}
+
+function openAddStudent(){
+  document.getElementById('new-student-name').value='';
+  document.getElementById('new-student-dob-d').value='';
+  document.getElementById('new-student-dob-m').value='';
+  document.getElementById('new-student-dob-y').value='';
+  document.getElementById('group-preview').textContent='';
+  populateTrainerSelects();
+  openModal('modal-add-student');
+}
+async function saveNewStudent(){
+  const name=document.getElementById('new-student-name').value.trim();
+  if(!name){ document.getElementById('new-student-name').focus(); return; }
+  const dob=getDobFromInputs();
+  const trainer=document.getElementById('new-student-trainer').value;
+  await db.addStudent(name,dob,trainer);
+  closeModal('modal-add-student');
+  renderStudents();
+  showAlert('students-alert','✅ Ученик добавлен: '+name,'ok');
+}
+
+function confirmDeleteStudent(id,name){
+  document.getElementById('modal-confirm-title').textContent='Удалить ученика?';
+  document.getElementById('modal-confirm-text').textContent=`«${name}» и все его результаты будут удалены навсегда.`;
+  document.getElementById('modal-confirm-btn').onclick=async()=>{
+    await db.deleteStudent(id);
+    closeModal('modal-confirm');
+    renderStudents();
+    showAlert('students-alert','🗑 Ученик удалён','ok');
+  };
+  openModal('modal-confirm');
+}
+
+// ===================== AUTOCOMPLETE =====================
+let acStudentId=null, acFocusIdx=-1;
+
+function acOnInput(){
+  const q=document.getElementById('ac-input').value.trim().toLowerCase();
+  acFocusIdx=-1;
+  if(!q){ acHide(); return; }
+  const matches=db.students.filter(s=>s.name.toLowerCase().includes(q)).slice(0,12);
+  acShow(matches,q);
+}
+
+function acOnFocus(){
+  const q=document.getElementById('ac-input').value.trim().toLowerCase();
+  if(q) acOnInput();
+}
+
+function acShow(matches,q){
+  const dd=document.getElementById('ac-dropdown');
+  if(!matches.length){ dd.innerHTML=`<div class="ac-empty">Ученик не найден</div>`; dd.style.display='block'; return; }
+  dd.innerHTML=matches.map((s,i)=>{
+    const latest=db.getLatest(s.id);
+    const lastStr=latest?fmtDate(latest.date):'нет тестов';
+    const hi=s.name.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'),'<b style="color:#FFE600">$1</b>');
+    return `<div class="ac-item" data-id="${s.id}" data-idx="${i}" onmousedown="acSelect('${s.id}',event)">
+      <div class="ac-av">${initials(s.name)}</div>
+      <div><div class="ac-name">${hi}</div><div class="ac-group">${studentGroup(s)||'Без группы'}</div></div>
+      <div class="ac-last">${lastStr}</div>
+    </div>`;
+  }).join('');
+  dd.style.display='block';
+}
+
+function acHide(){ document.getElementById('ac-dropdown').style.display='none'; acFocusIdx=-1; }
+
+function acOnKey(e){
+  const dd=document.getElementById('ac-dropdown');
+  const items=dd.querySelectorAll('.ac-item');
+  if(e.key==='ArrowDown'){ e.preventDefault(); acFocusIdx=Math.min(acFocusIdx+1,items.length-1); acHighlight(items); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); acFocusIdx=Math.max(acFocusIdx-1,0); acHighlight(items); }
+  else if(e.key==='Enter' && acFocusIdx>=0){ e.preventDefault(); const id=items[acFocusIdx]?.dataset.id; if(id) acCommit(id); }
+  else if(e.key==='Escape'){ acHide(); }
+}
+
+function acHighlight(items){ items.forEach((it,i)=>it.classList.toggle('focused',i===acFocusIdx)); }
+
+function acSelect(id,e){ e.preventDefault(); acCommit(id); }
+
+function acCommit(id){
+  const s=db.students.find(x=>x.id===id); if(!s) return;
+  acStudentId=id;
+  document.getElementById('f-student').value=id;
+  document.getElementById('ac-input').value='';
+  acHide();
+  document.getElementById('ac-chip').style.display='block';
+  document.getElementById('ac-chip').innerHTML=`<div class="ac-selected"><div class="ac-av" style="width:24px;height:24px;font-size:10px;border-radius:50%;background:#FFE600;color:#000;display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0">${initials(s.name)}</div><span style="font-weight:600">${s.name}</span>${studentGroup(s)?`<span style="color:#666666;font-size:12px">${studentGroup(s)}</span>`:''}<button class="ac-clear" onclick="acClear()">✕</button></div>`;
+  document.getElementById('ac-wrap').querySelector('input').style.display='none';
+}
+
+function acClear(){
+  acStudentId=null;
+  document.getElementById('f-student').value='';
+  document.getElementById('ac-chip').style.display='none';
+  document.getElementById('ac-chip').innerHTML='';
+  const inp=document.getElementById('ac-wrap').querySelector('input');
+  inp.style.display='block'; inp.value=''; inp.focus();
+}
+
+document.addEventListener('click',e=>{
+  if(!document.getElementById('ac-wrap').contains(e.target)) acHide();
+});
+
+// ===================== SESSION MODE =====================
+function initSession(preGroupFilter){
+  // populate group filter
+  const groups=[...new Set(db.students.map(s=>studentGroup(s)).filter(Boolean))].sort();
+  const sel=document.getElementById('sess-group');
+  sel.innerHTML='<option value="">Все группы</option>';
+  groups.forEach(g=>{ const o=document.createElement('option'); o.value=g; o.textContent=g; sel.appendChild(o); });
+  if(preGroupFilter) sel.value=preGroupFilter;
+  if(!document.getElementById('sess-date').value) document.getElementById('sess-date').valueAsDate=new Date();
+  renderSession();
+}
+
+function renderSession(){
+  const groupFilter=document.getElementById('sess-group').value;
+  const date=document.getElementById('sess-date').value||new Date().toISOString().slice(0,10);
+  const hideDone=document.getElementById('sess-hide-done').checked;
+
+  let students=db.students;
+  if(groupFilter) students=students.filter(s=>studentGroup(s)===groupFilter);
+  students=[...students].sort((a,b)=>a.name.localeCompare(b.name,'ru'));
+
+  // who already has a record on this date?
+  const doneSet=new Set(db.records.filter(r=>r.date===date).map(r=>r.studentId));
+  const total=students.length, done=students.filter(s=>doneSet.has(s.id)).length;
+
+  document.getElementById('session-progress-wrap').innerHTML=`
+    <div class="session-header">
+      <div class="session-progress">
+        <div style="font-size:14px;font-weight:700">Протестировано: <span style="color:#4ade80">${done}</span> из ${total}</div>
+        <div class="session-progress-bar"><div class="session-progress-fill" style="width:${total?Math.round(done/total*100):0}%"></div></div>
+        <div class="session-progress-text">${total-done} осталось · ${fmtDate(date)}</div>
+      </div>
+      ${done===total&&total>0?'<span class="badge badge-up" style="font-size:14px;padding:6px 14px">✅ Все протестированы!</span>':''}
+    </div>`;
+
+  const visible=hideDone?students.filter(s=>!doneSet.has(s.id)):students;
+
+  if(!visible.length){
+    document.getElementById('session-list').innerHTML=`<div class="empty"><div class="empty-icon">${hideDone?'✅':'👥'}</div><p>${hideDone?'Все ученики уже протестированы на эту дату!':'Нет учеников в этой группе. <a href="#" onclick="showPage(\'students\')" style="color:#FFE600">Добавить учеников</a>'}</p></div>`;
+    return;
+  }
+
+  document.getElementById('session-list').innerHTML=visible.map((s,i)=>{
+    const isDone=doneSet.has(s.id);
+    const latest=db.getLatest(s.id);
+    const latestStr=latest?`последний тест ${fmtDate(latest.date)}`:' нет данных';
+    const idx=students.indexOf(s)+1;
+    return `<div class="student-row-session ${isDone?'done':''}" id="srs-${s.id}">
+      <div class="srs-header" onclick="toggleSrsRow('${s.id}','${date}')">
+        <span class="srs-num">${idx}</span>
+        <div class="srs-av">${initials(s.name)}</div>
+        <div class="srs-info">
+          <div class="srs-name">${s.name}</div>
+          <div class="srs-meta">${studentGroup(s)||'Без группы'} · ${latestStr}</div>
+        </div>
+        <div class="srs-status">
+          ${isDone?'<span class="badge-done">✓ Готово</span>':'<span class="badge-skip">Не тестировался</span>'}
+        </div>
+      </div>
+      <div class="srs-body" id="srsb-${s.id}"></div>
+    </div>`;
+  }).join('');
+}
+
+let openSrsId=null;
+function toggleSrsRow(sid,date){
+  const body=document.getElementById('srsb-'+sid);
+  if(body.classList.contains('open')){ body.classList.remove('open'); openSrsId=null; return; }
+  // close others
+  document.querySelectorAll('.srs-body.open').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.student-row-session.active-session').forEach(r=>r.classList.remove('active-session'));
+  openSrsId=sid;
+  document.getElementById('srs-'+sid).classList.add('active-session');
+  body.innerHTML=buildSrsForm(sid,date);
+  body.classList.add('open');
+  // focus first number input
+  setTimeout(()=>{ body.querySelector('input[type=number]')?.focus(); },80);
+}
+
+function buildSrsForm(sid,date){
+  return `<div class="srs-exercises">
+    <div class="srs-ex">
+      <div class="srs-ex-title">💪 Подтягивания</div>
+      <div class="srs-type-toggle">
+        <button class="srs-type-btn active" onclick="srsBtnToggle(this,'srs-pullup-type','pullup')">Обычные</button>
+        <button class="srs-type-btn" onclick="srsBtnToggle(this,'srs-pullup-type','australian')">Австралийские</button>
+        <button class="srs-type-btn" onclick="srsBtnToggle(this,'srs-pullup-type','skip')">—</button>
+      </div>
+      <input type="number" id="srs-f-pullup-${sid}" min="0" placeholder="0"><span class="srs-unit">пов</span>
+      <input type="hidden" id="srs-pullup-type" value="pullup">
+    </div>
+    <div class="srs-ex">
+      <div class="srs-ex-title">🤸 Отжимания</div>
+      <div class="srs-type-toggle">
+        <button class="srs-type-btn active" onclick="srsBtnToggle(this,'srs-pushup-type','pushup')">Обычные</button>
+        <button class="srs-type-btn" onclick="srsBtnToggle(this,'srs-pushup-type','knee')">С колен</button>
+        <button class="srs-type-btn" onclick="srsBtnToggle(this,'srs-pushup-type','skip')">—</button>
+      </div>
+      <input type="number" id="srs-f-pushup-${sid}" min="0" placeholder="0"><span class="srs-unit">пов</span>
+      <input type="hidden" id="srs-pushup-type" value="pushup">
+    </div>
+    <div class="srs-ex">
+      <div class="srs-ex-title">🔥 Пресс 30 сек</div>
+      <input type="number" id="srs-f-abs-${sid}" min="0" placeholder="0"><span class="srs-unit">пов</span>
+    </div>
+    <div class="srs-ex">
+      <div class="srs-ex-title">🪢 Скакалка</div>
+      <div class="srs-type-toggle">
+        <button class="srs-type-btn active" onclick="srsBtnToggle(this,'srs-jumprope-type','count')">Считать</button>
+        <button class="srs-type-btn" onclick="srsBtnToggle(this,'srs-jumprope-type','skip')">—</button>
+      </div>
+      <input type="number" id="srs-f-jumprope-${sid}" min="0" placeholder="0"><span class="srs-unit">пр</span>
+      <input type="hidden" id="srs-jumprope-type" value="count">
+    </div>
+    <div class="srs-ex">
+      <div class="srs-ex-title">🦘 Прыжок в длину</div>
+      <div class="srs-type-toggle">
+        <button class="srs-type-btn active" onclick="srsBtnToggle(this,'srs-longjump-type','cm')">Замер</button>
+        <button class="srs-type-btn" onclick="srsBtnToggle(this,'srs-longjump-type','skip')">—</button>
+      </div>
+      <input type="number" id="srs-f-longjump-${sid}" min="0" placeholder="0"><span class="srs-unit">см</span>
+      <input type="hidden" id="srs-longjump-type" value="cm">
+    </div>
+  </div>
+  <div class="srs-actions" style="flex-wrap:wrap;gap:10px">
+    ${(()=>{ const trainers=db.trainers; const opts='<option value="">Кто принимал</option>'+trainers.map(t=>`<option value="${t.id}">${t.name}</option>`).join(''); return `<select id="srs-accepted-${sid}" style="max-width:220px;padding:8px 12px;font-size:13px">${opts}</select>`; })()}
+    <button class="btn btn-primary" onclick="saveSrsResult('${sid}','${date}')">✓ Сохранить и следующий</button>
+    <button class="btn btn-ghost btn-sm" onclick="toggleSrsRow('${sid}','${date}')">Отмена</button>
+  </div>`;
+}
+
+function srsBtnToggle(btn,typeId,val){
+  btn.closest('.srs-type-toggle').querySelectorAll('.srs-type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(typeId).value=val;
+  // hide/show number input
+  const inp=btn.closest('.srs-ex').querySelector('input[type=number]');
+  const unit=btn.closest('.srs-ex').querySelector('.srs-unit');
+  if(inp){ inp.style.display=val==='skip'?'none':'inline-block'; }
+  if(unit){ unit.style.display=val==='skip'?'none':'inline'; }
+}
+
+function srsGetVal(id){ const v=document.getElementById(id); return v&&v.value!==''?parseInt(v.value):null; }
+
+async function saveSrsResult(sid,date){
+  const acceptedEl=document.getElementById('srs-accepted-'+sid);
+  const acceptedId=acceptedEl?acceptedEl.value:'';
+  const rec={
+    id:Date.now().toString(36)+Math.random().toString(36).slice(2),
+    studentId:sid, date,
+    acceptedBy:acceptedId?db.getTrainerName(acceptedId):'',
+    notes:'',
+    exercises:{
+      pullup:{type:document.getElementById('srs-pullup-type').value, value:srsGetVal(`srs-f-pullup-${sid}`)},
+      pushup:{type:document.getElementById('srs-pushup-type').value, value:srsGetVal(`srs-f-pushup-${sid}`)},
+      abs:{type:'reps', value:srsGetVal(`srs-f-abs-${sid}`)},
+      jumprope:{type:document.getElementById('srs-jumprope-type').value, value:srsGetVal(`srs-f-jumprope-${sid}`)},
+      longjump:{type:document.getElementById('srs-longjump-type').value, value:srsGetVal(`srs-f-longjump-${sid}`)}
+    }
+  };
+  await db.addRecord(rec);
+
+  // re-render and auto-open next undone student
+  const date2=document.getElementById('sess-date').value||date;
+  renderSession();
+
+  // find next not-done student in visible list and open
+  setTimeout(()=>{
+    const rows=document.querySelectorAll('.student-row-session:not(.done)');
+    if(rows.length){ const nextId=rows[0].id.replace('srs-',''); toggleSrsRow(nextId,date2); rows[0].scrollIntoView({behavior:'smooth',block:'center'}); }
+  },100);
+}
+
+// ===================== ADD RESULT =====================
+function initAddResultPage(preSelectId){
+  acClear();
+  if(!document.getElementById('f-date').value) document.getElementById('f-date').valueAsDate=new Date();
+  document.getElementById('add-result-alert').innerHTML='';
+  populateTrainerSelects();
+  if(preSelectId){ acCommit(preSelectId); }
+}
+
+function preAddResult(id){
+  showPage('add-result',id);
+}
+
+function setToggle(exercise,type,btn){
+  const parent=btn.closest('.exercise-block');
+  parent.querySelectorAll('.toggle-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const hiddenInput=document.getElementById(`f-${exercise}-type`);
+  if(hiddenInput) hiddenInput.value=type;
+  const inputDiv=document.getElementById(`${exercise}-input`);
+  if(inputDiv) inputDiv.style.display=type==='skip'?'none':'flex';
+}
+
+function resetForm(){
+  document.getElementById('result-form').reset();
+  document.getElementById('f-date').valueAsDate=new Date();
+  acClear();
+  // reset toggles
+  ['pullup','pushup','jumprope','longjump'].forEach(ex=>{
+    const block=document.querySelector(`#f-${ex}-type`).closest('.exercise-block');
+    block.querySelectorAll('.toggle-opt').forEach((b,i)=>b.classList.toggle('active',i===0));
+    const inp=document.getElementById(`${ex}-input`);
+    if(inp) inp.style.display='flex';
+    document.getElementById(`f-${ex}-type`).value=ex==='jumprope'?'count':ex==='longjump'?'cm':ex;
+  });
+  setTimeout(()=>document.getElementById('ac-input').focus(),50);
+}
+
+function getExVal(id){
+  const v=document.getElementById(id).value;
+  return v===''?null:parseInt(v);
+}
+
+async function submitResult(e){
+  e.preventDefault();
+  const sid=document.getElementById('f-student').value;
+  if(!sid){ showAlert('add-result-alert','⚠️ Найдите и выберите ученика из списка','err'); document.getElementById('ac-input').focus(); return; }
+  const date=document.getElementById('f-date').value;
+
+  const rec={
+    id:Date.now().toString(36)+Math.random().toString(36).slice(2),
+    studentId:sid,
+    date,
+    acceptedBy:(()=>{ const v=document.getElementById('f-accepted-by').value; return v?db.getTrainerName(v):'' })(),
+    notes:document.getElementById('f-notes').value,
+    exercises:{
+      pullup:{type:document.getElementById('f-pullup-type').value, value:getExVal('f-pullup')},
+      pushup:{type:document.getElementById('f-pushup-type').value, value:getExVal('f-pushup')},
+      abs:{type:'reps', value:getExVal('f-abs')},
+      jumprope:{type:document.getElementById('f-jumprope-type').value, value:getExVal('f-jumprope')},
+      longjump:{type:document.getElementById('f-longjump-type').value, value:getExVal('f-longjump')}
+    }
+  };
+
+  await db.addRecord(rec);
+  const sname=db.students.find(s=>s.id===sid)?.name||'Ученик';
+  showAlert('add-result-alert',`✅ Результат сохранён для ${sname}!`,'ok');
+  resetForm();
+}
+
+// ===================== TRAINERS =====================
+function renderTrainers(){
+  const trainers=db.trainers;
+  const students=db.students;
+
+  if(!trainers.length){
+    document.getElementById('trainer-cards-wrap').innerHTML=`
+      <div class="empty" style="padding:80px 20px">
+        <div class="empty-icon">👤</div>
+        <p style="font-size:15px;margin-bottom:12px">Нет тренеров. Добавьте первого.</p>
+        <button class="btn btn-primary" onclick="openAddTrainer()">+ Добавить тренера</button>
+      </div>`;
+    return;
+  }
+
+  const cards=trainers.map(t=>{
+    const myStudents=students.filter(s=>s.trainer===t.id);
+    const allRecs=myStudents.flatMap(s=>db.getStudentRecords(s.id));
+    const lastTest=allRecs.length?allRecs.sort((a,b)=>b.date.localeCompare(a.date))[0].date:null;
+    const improving=myStudents.filter(s=>{
+      const score=getProgressScore(db.getLatest(s.id),db.getPrev(s.id));
+      return score!==null&&score>0.2;
+    }).length;
+    return `<div class="trainer-card" onclick="filterByTrainer('${t.id}')">
+      <div class="tc-head">
+        <div class="tc-av">${initials(t.name)}</div>
+        <div>
+          <div class="tc-name">${t.name}</div>
+          <div class="tc-role">${t.role||'Тренер'}</div>
+        </div>
+      </div>
+      <div class="tc-stats">
+        <div class="tc-stat"><div class="tc-stat-val">${myStudents.length}</div><div class="tc-stat-lbl">Учеников</div></div>
+        <div class="tc-stat"><div class="tc-stat-val" style="color:#4ade80">${improving}</div><div class="tc-stat-lbl">Растут</div></div>
+        <div class="tc-stat"><div class="tc-stat-val" style="font-size:14px;color:#666666">${lastTest?fmtDate(lastTest):'—'}</div><div class="tc-stat-lbl">Последний тест</div></div>
+      </div>
+      <div class="tc-actions" onclick="event.stopPropagation()">
+        <button class="btn btn-ghost btn-sm" onclick="filterByTrainer('${t.id}')">Показать на дашборде</button>
+        <button class="btn btn-ghost btn-sm" onclick="openEditTrainer('${t.id}')">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDeleteTrainer('${t.id}','${t.name.replace(/'/g,"\\'")}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('trainer-cards-wrap').innerHTML=`<div class="trainer-cards-grid">${cards}</div>`;
+}
+
+function filterByTrainer(tid){
+  dashTrainerFilter=tid;
+  showPage('dashboard');
+}
+
+function openAddTrainer(){
+  document.getElementById('trainer-modal-title').textContent='Новый тренер';
+  document.getElementById('new-trainer-name').value='';
+  document.getElementById('new-trainer-role').value='';
+  document.getElementById('editing-trainer-id').value='';
+  openModal('modal-add-trainer');
+}
+
+function openEditTrainer(id){
+  const t=db.trainers.find(x=>x.id===id); if(!t) return;
+  document.getElementById('trainer-modal-title').textContent='Редактировать тренера';
+  document.getElementById('new-trainer-name').value=t.name;
+  document.getElementById('new-trainer-role').value=t.role||'';
+  document.getElementById('editing-trainer-id').value=id;
+  openModal('modal-add-trainer');
+}
+
+async function saveTrainer(){
+  const name=document.getElementById('new-trainer-name').value.trim();
+  if(!name){ document.getElementById('new-trainer-name').focus(); return; }
+  const role=document.getElementById('new-trainer-role').value.trim();
+  const editId=document.getElementById('editing-trainer-id').value;
+  if(editId){ await db.updateTrainer(editId,name,role); }
+  else { await db.addTrainer(name,role); }
+  closeModal('modal-add-trainer');
+  renderTrainers();
+  showAlert('trainers-alert',`✅ Тренер ${editId?'обновлён':'добавлен'}: ${name}`,'ok');
+}
+
+function confirmDeleteTrainer(id,name){
+  document.getElementById('modal-confirm-title').textContent='Удалить тренера?';
+  document.getElementById('modal-confirm-text').textContent=`«${name}» будет удалён. Ученики останутся, но потеряют привязку к тренеру.`;
+  document.getElementById('modal-confirm-btn').onclick=async()=>{
+    await db.deleteTrainer(id);
+    closeModal('modal-confirm');
+    renderTrainers();
+    showAlert('trainers-alert','🗑 Тренер удалён','ok');
+  };
+  openModal('modal-confirm');
+}
+
+// ===================== PROFILE =====================
+
+function renderProfile(sid){
+  const student=db.students.find(s=>s.id===sid);
+  if(!student){ showPage('dashboard'); return; }
+
+  const records=db.getStudentRecords(sid);
+  const latest=records[records.length-1]||null;
+  const prev=records[records.length-2]||null;
+
+  const keys=['pullup','pushup','abs','jumprope','longjump'];
+  const icons={pullup:'💪',pushup:'🤸',abs:'🔥',jumprope:'🪢',longjump:'🦘'};
+  const names={pullup:'Подтягивания',pushup:'Отжимания',abs:'Пресс 30 сек',jumprope:'Скакалка',longjump:'Прыжок в длину'};
+  const units={pullup:'пов',pushup:'пов',abs:'пов',jumprope:'пов',longjump:'см'};
+
+  // Build chart series — split pullup/pushup by type
+  const seriesColors={'pullup':'#FFE600','australian':'#f59e0b','pushup':'#22c55e','knee':'#86efac','abs':'#f59e0b','jumprope':'#a855f7','longjump':'#ec4899'};
+  function buildSeries(key,icon,unit){
+    const types=[...new Set(records.filter(r=>{const e=r.exercises[key];return e&&e.type!=='skip'&&e.value!=null;}).map(r=>r.exercises[key].type))];
+    if(!types.length) return [{key,typeFilter:null,name:names[key],icon,unit,color:seriesColors[key]}];
+    const order=key==='pullup'?['australian','pullup']:['knee','pushup'];
+    const seriesNames={pullup:'Подтяг. (обычные)',australian:'Подтяг. (австр.)',pushup:'Отж. (обычные)',knee:'Отж. (с колен)'};
+    return order.filter(t=>types.includes(t)).map(t=>({key,typeFilter:t,name:seriesNames[t],icon,unit,color:seriesColors[t]}));
+  }
+  const chartSeries=[
+    ...buildSeries('pullup','💪','пов'),
+    ...buildSeries('pushup','🤸','пов'),
+    {key:'abs',typeFilter:null,name:names.abs,icon:'🔥',unit:'пов',color:seriesColors.abs},
+    {key:'jumprope',typeFilter:null,name:names.jumprope,icon:'🪢',unit:'пов',color:seriesColors.jumprope},
+    {key:'longjump',typeFilter:null,name:names.longjump,icon:'🦘',unit:'см',color:seriesColors.longjump},
+  ];
+
+  function getSeriesRecords(s){
+    return s.typeFilter
+      ? records.filter(r=>{const e=r.exercises[s.key];return e&&e.type===s.typeFilter&&e.value!=null;})
+      : records.filter(r=>{const e=r.exercises[s.key];return e&&e.type!=='skip'&&e.value!=null;});
+  }
+
+  const miniCardsHtml=chartSeries.map(s=>{
+    const sr=getSeriesRecords(s);
+    const le=sr[sr.length-1]?.exercises[s.key];
+    const pe=sr[sr.length-2]?.exercises[s.key];
+    const hasLatest=le&&le.value!=null;
+    const hasPrev=pe&&pe.value!=null;
+    const valStr=hasLatest?le.value:'—';
+    let deltaHtmlStr='',trendClass='trend-flat';
+    if(hasLatest&&hasPrev){
+      const d=le.value-pe.value;
+      if(d>0){deltaHtmlStr=`<span class="ex-chart-delta trend-up">▲ +${d}</span>`;trendClass='trend-up';}
+      else if(d<0){deltaHtmlStr=`<span class="ex-chart-delta trend-down">▼ ${d}</span>`;trendClass='trend-down';}
+      else deltaHtmlStr=`<span class="ex-chart-delta trend-flat">● 0</span>`;
+    }
+    let chartSvg='<div class="ex-no-data">Нет данных для графика</div>';
+    if(sr.length>=2){
+      const pts=sr.map(r=>r.exercises[s.key].value).filter(v=>v!=null);
+      if(pts.length>=2){
+        const W=240,H=70,pad=6;
+        const mn=Math.min(...pts),mx=Math.max(...pts),rng=mx-mn||1;
+        const cx=i=>pad+i*(W-2*pad)/(pts.length-1);
+        const cy=v=>H-pad-(v-mn)/rng*(H-2*pad);
+        const poly=pts.map((v,i)=>cx(i)+','+cy(v)).join(' ');
+        const area=`${cx(0)},${H} `+pts.map((v,i)=>cx(i)+','+cy(v)).join(' ')+` ${cx(pts.length-1)},${H}`;
+        const n=pts.length,sx=pts.reduce((a,_,i)=>a+i,0),sy=pts.reduce((a,v)=>a+v,0);
+        const sxy=pts.reduce((a,v,i)=>a+i*v,0),sx2=pts.reduce((a,_,i)=>a+i*i,0);
+        const slope=(n*sxy-sx*sy)/(n*sx2-sx*sx||1);
+        const ic=(sy-slope*sx)/n;
+        const tc=slope>0.05?'#4ade80':slope<-0.05?'#f87171':'#fbbf24';
+        const tp=`${cx(0)},${cy(ic)} ${cx(pts.length-1)},${cy(slope*(pts.length-1)+ic)}`;
+        chartSvg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:70px;display:block;margin-top:8px" xmlns="http://www.w3.org/2000/svg"><polygon points="${area}" fill="${s.color}22"/><polyline points="${poly}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><polyline points="${tp}" fill="none" stroke="${tc}" stroke-width="1.5" stroke-dasharray="5,4"/>${pts.map((v,i)=>`<circle cx="${cx(i)}" cy="${cy(v)}" r="3" fill="${s.color}"/>`).join('')}</svg>`;
+      }
+    }
+    return `<div class="ex-chart-card">
+      <div class="ex-chart-card-header">
+        <span class="ex-chart-title">${s.icon} ${s.name}</span>
+      </div>
+      <div class="ex-chart-nums">
+        <span class="ex-chart-val ${trendClass}">${valStr}</span>
+        <span class="ex-chart-unit">${hasLatest?s.unit:''}</span>
+        ${deltaHtmlStr}
+      </div>
+      ${chartSvg}
+    </div>`;
+  }).join('');
+
+  // history table
+  const histRows=[...records].reverse().map((r,i)=>{
+    const isLatest=i===0;
+    const exCells=keys.map(k=>{
+      const e=r.exercises[k];
+      if(!e||e.type==='skip'||e.value==null) return '<td class="no-data">—</td>';
+      const tag=TYPE_SHORT[e.type]?`<span style="font-size:10px;color:#FFE600;margin-left:3px">${TYPE_SHORT[e.type]}</span>`:'';
+      return `<td>${e.value}${k==='longjump'?' см':''}${tag}</td>`;
+    }).join('');
+    const meta=[
+      r.acceptedBy?`<span class="accepted-pill">✍️ ${r.acceptedBy}</span>`:'',
+      r.notes?`<span style="color:#666666;font-size:11px">${r.notes}</span>`:''
+    ].filter(Boolean).join(' ');
+    return `<tr ${isLatest?'style="background:#2a2700"':''}>
+      <td>${fmtDate(r.date)}${isLatest?'<span class="tag" style="margin-left:6px">последний</span>':''}</td>
+      ${exCells}
+      <td>${meta}</td>
+      <td><button class="btn btn-danger btn-sm" data-admin-only onclick="confirmDeleteRecord('${r.id}','${sid}')">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  const trainerHtml=student.trainer?`<span class="trainer-pill">👤 Тренер: ${db.getTrainerName(student.trainer)}</span>`:'';
+
+  document.getElementById('profile-content').innerHTML=`
+    <div class="profile-header">
+      <div class="avatar">${initials(student.name)}</div>
+      <div>
+        <div class="profile-name">${student.name}</div>
+        <div class="profile-meta">
+          ${studentGroup(student)?`<span class="tag">${studentGroup(student)}</span>`:''}${student.dob?`<span style="color:#666666;font-size:12px">🎂 ${fmtDob(student.dob)} · ${calcAge(student.dob)} лет</span>`:''}${auth.isAdmin()?`<span style="font-size:11px;background:#242424;border:1px solid #444;border-radius:8px;padding:2px 8px;color:#aaa">🔑 Код: <b style="color:#FFE600">${student.clientCode||'—'}</b></span>`:''}
+          ${trainerHtml}
+          <span style="color:#666666;font-size:12px">${records.length} тестирований</span>
+          ${progressBadge(latest,prev)}
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <button class="btn-share" data-admin-only onclick="exportParentView('${sid}')">📤 Отправить родителю</button>
+        <button class="btn btn-primary btn-sm" data-trainer-plus onclick="preAddResult('${sid}')">+ Добавить результат</button>
+      </div>
+    </div>
+
+    <div class="ex-chart-grid" id="ex-chart-grid-${sid}">${miniCardsHtml}</div>
+
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:14px 16px 6px;font-size:14px;font-weight:600;color:#FFE600">📋 История тестирований</div>
+      ${records.length?`
+      <table class="history-row">
+        <thead><tr>
+          <th>Дата</th><th>💪</th><th>🤸</th><th>🔥</th><th>🪢</th><th>🦘</th>
+          <th>Тренер / заметки</th><th></th>
+        </tr></thead>
+        <tbody>${histRows}</tbody>
+      </table>`:`<div class="empty"><div class="empty-icon">📋</div><p>Нет данных. <a href="#" onclick="preAddResult('${sid}')" style="color:#FFE600">Добавить первый результат</a></p></div>`}
+    </div>`;
+
+}
+
+function confirmDeleteRecord(rid,sid){
+  document.getElementById('modal-confirm-title').textContent='Удалить результат?';
+  document.getElementById('modal-confirm-text').textContent='Этот результат будет удалён без возможности восстановления.';
+  document.getElementById('modal-confirm-btn').onclick=async()=>{
+    await db.deleteRecord(rid);
+    closeModal('modal-confirm');
+    renderProfile(sid);
+  };
+  openModal('modal-confirm');
+}
+
+// ===================== MODAL =====================
+function openModal(id){ document.getElementById(id).classList.add('open') }
+function closeModal(id){ document.getElementById(id).classList.remove('open') }
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open') });
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open')) });
+
+// ===================== ALERTS =====================
+let alertTimers={};
+function showAlert(container,msg,type){
+  clearTimeout(alertTimers[container]);
+  document.getElementById(container).innerHTML=`<div class="alert alert-${type==='ok'?'ok':'err'}">${msg}</div>`;
+  alertTimers[container]=setTimeout(()=>{ const el=document.getElementById(container); if(el) el.innerHTML=''; },4000);
+}
+
+// ===================== INIT =====================
+document.getElementById('new-student-name').addEventListener('keydown',e=>{ if(e.key==='Enter') saveNewStudent() });
+document.getElementById('new-trainer-name').addEventListener('keydown',e=>{ if(e.key==='Enter') saveTrainer() });
+document.getElementById('f-date').valueAsDate=new Date();
+// Инициализация: загрузка данных из Supabase
+setTimeout(async function(){
+  try{
+    await auth.loadCfg();
+    await loadAll();
+    for(const s of _students){ if(!s.clientCode) await db.ensureCode(s); }
+  }catch(e){
+    console.error('Init error:',e);
+    // show non-blocking error but let the user still interact
+    const hint=document.getElementById('login-hint');
+    if(hint) hint.textContent='⚠️ Нет соединения с сервером. Данные могут быть недоступны.';
+  }
+
+  if(auth.role){
+    document.getElementById('login-overlay').style.display='none';
+    applyRoleUI();
+    renderDashboard();
+  } else if(!auth.hasPins()){
+    auth.login('admin');
+    document.getElementById('login-overlay').style.display='none';
+    applyRoleUI();
+    renderDashboard();
+  } else {
+    renderDashboard();
+  }
+},0);
+
+
+// ════════════════════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════════════════════
+const auth={
+  _cfg:{admin_pin:'',trainer_pin:''},
+  async loadCfg(){const r=await _get('auth_config','id=eq.1&select=*');this._cfg=r[0]||{admin_pin:'',trainer_pin:''};},
+  async saveCfg(data){await _patch('auth_config','id=eq.1',data);this._cfg={...this._cfg,...data};},
+  get role(){return sessionStorage.getItem('gym_role')||''},
+  get clientSid(){return sessionStorage.getItem('gym_csid')||''},
+  login(role,sid=''){sessionStorage.setItem('gym_role',role);sessionStorage.setItem('gym_csid',sid);},
+  logout(){sessionStorage.removeItem('gym_role');sessionStorage.removeItem('gym_csid');},
+  isAdmin(){return this.role==='admin'},
+  isTrainer(){return this.role==='trainer'||this.role==='admin'},
+  isClient(){return this.role==='client'},
+  hasPins(){return !!(this._cfg&&this._cfg.admin_pin)},
+};
+
+let loginRole='';
+function selectLoginRole(r){
+  loginRole=r;
+  ['admin','trainer','client'].forEach(x=>document.getElementById('role-btn-'+x).classList.toggle('selected',x===r));
+  document.getElementById('login-err').textContent='';
+  const pinArea=document.getElementById('login-area-pin');
+  const codeArea=document.getElementById('login-area-code');
+  if(r==='admin'||r==='trainer'){
+    pinArea.style.display='';
+    codeArea.style.display='none';
+    document.getElementById('login-pin').placeholder=r==='admin'?'PIN администратора':'PIN тренера';
+    document.getElementById('login-pin').value='';
+    document.getElementById('login-hint').textContent=auth.hasPins()?'':'Первый вход — PIN не задан, введите любое значение';
+    document.getElementById('login-pin').focus();
+  } else {
+    pinArea.style.display='none';
+    codeArea.style.display='';
+    document.getElementById('login-code').value='';
+    document.getElementById('login-hint').textContent='Код выдаёт администратор зала';
+    document.getElementById('login-code').focus();
+  }
+}
+
+async function submitLogin(){
+  const err=document.getElementById('login-err');
+  const cfg=auth._cfg;
+  if(loginRole==='admin'){
+    const pin=document.getElementById('login-pin').value;
+    if(!auth.hasPins()){
+      await auth.saveCfg({admin_pin:pin||'admin'});
+      auth.login('admin');
+      closeLoginOverlay();
+      return;
+    }
+    if(pin!==cfg.admin_pin){ err.textContent='Неверный PIN'; return; }
+    auth.login('admin'); closeLoginOverlay();
+  } else if(loginRole==='trainer'){
+    const pin=document.getElementById('login-pin').value;
+    if(!cfg.trainer_pin){ err.textContent='PIN тренера не задан. Обратитесь к администратору.'; return; }
+    if(pin!==cfg.trainer_pin){ err.textContent='Неверный PIN'; return; }
+    auth.login('trainer'); closeLoginOverlay();
+  } else if(loginRole==='client'){
+    const code=document.getElementById('login-code').value.trim().toUpperCase();
+    if(!code){ err.textContent='Введите код'; return; }
+    const student=db.students.find(s=>(s.clientCode||'').toUpperCase()===code);
+    if(!student){ err.textContent='Код не найден'; return; }
+    auth.login('client', student.id);
+    closeLoginOverlay();
+    showPage('profile', student.id);
+  }
+}
+
+function closeLoginOverlay(){
+  document.getElementById('login-overlay').style.display='none';
+  applyRoleUI();
+}
+
+function authLogout(){
+  auth.logout();
+  document.getElementById('login-overlay').style.display='flex';
+  document.getElementById('login-area-pin').style.display='none';
+  document.getElementById('login-area-code').style.display='none';
+  document.getElementById('login-err').textContent='';
+  document.getElementById('login-hint').textContent='';
+  loginRole='';
+  ['admin','trainer','client'].forEach(x=>document.getElementById('role-btn-'+x).classList.remove('selected'));
+}
+
+function applyRoleUI(){
+  const role=auth.role;
+  // nav role badge
+  const badge=document.getElementById('nav-role-badge');
+  if(role==='admin') badge.innerHTML='<span class="role-badge">👑 Администратор</span>';
+  else if(role==='trainer') badge.innerHTML='<span class="role-badge trainer-badge">🏋️ Тренер</span>';
+  else badge.innerHTML='';
+
+  // settings button (admin only)
+  const settingsBtn=document.getElementById('nav-settings');
+  if(settingsBtn) settingsBtn.style.display=role==='admin'?'':'none';
+
+  // hide trainer management for non-admins
+  const navTrainers=document.getElementById('nav-trainers');
+  if(navTrainers) navTrainers.style.display=role==='admin'?'':'none';
+
+  // hide delete/edit buttons for clients (and non-admins for destructive actions)
+  document.querySelectorAll('[data-admin-only]').forEach(el=>{
+    el.style.display=role==='admin'?'':'none';
+  });
+  document.querySelectorAll('[data-trainer-plus]').forEach(el=>{
+    el.style.display=(role==='admin'||role==='trainer')?'':'none';
+  });
+
+  if(role==='client'){
+    // hide most nav for clients
+    ['session','add-result','students','trainers'].forEach(p=>{
+      const btn=document.querySelector(`.nav-btn[onclick*="${p}"]`);
+      if(btn) btn.style.display='none';
+    });
+    showPage('dashboard');
+  }
+}
+
+async function saveAuthSettings(){
+  const adminPin=document.getElementById('set-admin-pin').value.trim();
+  const trainerPin=document.getElementById('set-trainer-pin').value.trim();
+  if(adminPin&&adminPin.length<4){ alert('PIN должен быть не менее 4 символов'); return; }
+  if(trainerPin&&trainerPin.length<4){ alert('PIN должен быть не менее 4 символов'); return; }
+  const data={};
+  if(adminPin) data.admin_pin=adminPin;
+  if(trainerPin) data.trainer_pin=trainerPin;
+  await auth.saveCfg(data);
+  closeModal('modal-settings');
+  if(adminPin){ authLogout(); }
+  else alert('Настройки сохранены');
+}
+
+// Generate client code for student if missing
+function ensureClientCode(s){ return db.ensureCode(s); }
+
+// ── EXPORT PARENT HTML ───────────────────────────────────────────────────────
+async function exportParentView(sid){
+  const student=db.students.find(s=>s.id===sid);
+  if(!student) return;
+  // fetch fresh from Supabase to guarantee up-to-date data
+  showLoading(true);
+  let records;
+  try{
+    const raw=await _get('records','student_id=eq.'+sid+'&order=date.asc');
+    records=raw.map(_nr);
+  }catch(e){
+    records=db.getStudentRecords(sid);
+  }finally{showLoading(false);}
+  if(!records.length){alert('Нет записей для экспорта. Сначала добавьте результаты тестирования.');return;}
+
+  // helpers (run in app context, output is static HTML)
+  const exKeys=['pullup','pushup','abs','jumprope','longjump'];
+  const exNames={pullup:'💪 Подтягивания',pushup:'🤸 Отжимания',abs:'🔥 Пресс 30 сек',jumprope:'🪢 Скакалка',longjump:'🦘 Прыжок в длину'};
+  const exUnits={pullup:'пов',pushup:'пов',abs:'пов',jumprope:'пов',longjump:'см'};
+  const typeNames={pullup:'Обычные',australian:'Австралийские',pushup:'Обычные',knee:'С колен'};
+  function fmtD(d){const[y,m,dd]=d.split('-');return dd+'.'+m+'.'+y;}
+  function initials2(n){return (n||'').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'?';}
+  function calcAge2(dob){if(!dob)return null;const b=new Date(dob),now=new Date();let a=now.getFullYear()-b.getFullYear();if(now.getMonth()<b.getMonth()||(now.getMonth()===b.getMonth()&&now.getDate()<b.getDate()))a--;return a;}
+
+  // SVG sparkline generator
+  const exColors={pullup:'#FFE600',pushup:'#22c55e',abs:'#f59e0b',jumprope:'#a855f7',longjump:'#ec4899'};
+  function sparkline(pts,color){
+    if(pts.length<2)return '';
+    const W=240,H=70,pad=6;
+    const vals=pts.map(p=>p.value);
+    const mn=Math.min(...vals),mx=Math.max(...vals);
+    const rng=mx-mn||1;
+    const x=i=>pad+i*(W-2*pad)/(pts.length-1);
+    const y=v=>H-pad-(v-mn)/(rng)*(H-2*pad);
+    const poly=pts.map((p,i)=>x(i)+','+y(p.value)).join(' ');
+    const area=`${x(0)},${H} `+pts.map((p,i)=>x(i)+','+y(p.value)).join(' ')+` ${x(pts.length-1)},${H}`;
+    let dots='';
+    pts.forEach((p,i)=>{dots+=`<circle cx="${x(i)}" cy="${y(p.value)}" r="3" fill="${color}"/>`;});
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:70px;display:block;margin-top:10px" xmlns="http://www.w3.org/2000/svg">`+
+      `<polygon points="${area}" fill="${color}22"/>`+
+      `<polyline points="${poly}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`+
+      dots+'</svg>';
+  }
+
+  // build cards HTML
+  const cardsHtml=exKeys.map(k=>{
+    const vals=records.filter(r=>{const e=r.exercises&&r.exercises[k];return e&&e.type!=='skip'&&e.value!=null;});
+    const last=vals.length?vals[vals.length-1].exercises[k]:null;
+    const prev=vals.length>1?vals[vals.length-2].exercises[k]:null;
+    let delta='';
+    if(last&&prev){const d=last.value-prev.value;delta=d>0?'<span style="color:#4ade80">▲ +'+d+'</span>':d<0?'<span style="color:#f87171">▼ '+d+'</span>':'';}
+    const typeLbl=last&&typeNames[last.type]?' <span style="font-size:10px;color:#aaa">· '+typeNames[last.type]+'</span>':'';
+    const chart=vals.length>=2?sparkline(vals.map(v=>v.exercises[k]),exColors[k]):'<div style="color:#444;font-size:11px;margin-top:8px">Нужно минимум 2 теста для графика</div>';
+    return '<div style="background:#242424;border-radius:12px;padding:16px;border:1px solid #333">'+
+      '<div style="font-size:13px;font-weight:700;color:#FFE600;margin-bottom:8px">'+exNames[k]+typeLbl+'</div>'+
+      '<div><span style="font-size:28px;font-weight:800">'+(last?last.value:'—')+'</span>'+
+      (last?'<span style="font-size:12px;color:#666;margin-left:4px">'+exUnits[k]+'</span>':'')+' '+delta+'</div>'+
+      chart+'</div>';
+  }).join('');
+
+  // build history table
+  const rows=[...records].reverse().map((r,i)=>{
+    const cells=exKeys.map(k=>{
+      const e=r.exercises&&r.exercises[k];
+      if(!e||e.type==='skip'||e.value==null)return '<td style="color:#555">—</td>';
+      return '<td>'+e.value+(k==='longjump'?' см':'')+'</td>';
+    }).join('');
+    const dateCell=fmtD(r.date)+(i===0?' <span style="background:#2a2700;color:#FFE600;border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">последний</span>':'');
+    return '<tr'+(i===0?' style="background:#1e1c00"':'')+'><td>'+dateCell+'</td>'+cells+'</tr>';
+  }).join('');
+  const histHtml='<table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr style="color:#666;font-size:11px;text-transform:uppercase"><th style="padding:6px 8px;border-bottom:1px solid #333;text-align:left">Дата</th>'+
+    exKeys.map(k=>'<th style="padding:6px 8px;border-bottom:1px solid #333">'+{pullup:'💪',pushup:'🤸',abs:'🔥',jumprope:'🪢',longjump:'🦘'}[k]+'</th>').join('')+
+    '</tr></thead><tbody>'+rows+'</tbody></table>';
+
+  // age/sub line
+  const ageParts=[];
+  if(student.dob){const a=calcAge2(student.dob);if(a!==null)ageParts.push(a+' лет');}
+  const subHtml=ageParts.map(x=>'<span style="background:#2a2700;color:#FFE600;border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700;margin-right:6px">'+x+'</span>').join('');
+
+  const today=new Date().toLocaleDateString('ru-RU');
+
+  const parentHtml='<!DOCTYPE html>\n<html lang="ru">\n<head>\n'+
+    '<meta charset="UTF-8">\n'+
+    '<meta name="viewport" content="width=device-width,initial-scale=1.0">\n'+
+    '<title>Результаты — '+student.name+'</title>\n'+
+    '<style>\n*{box-sizing:border-box;margin:0;padding:0}\n'+
+    'body{font-family:system-ui,sans-serif;background:#1a1a1a;color:#fff;min-height:100vh;padding:20px}\n'+
+    'td{padding:8px;border-bottom:1px solid #2e2e2e}\nth{text-align:left}\n'+
+    '</style>\n</head>\n<body>\n'+
+    '<div style="background:#111;border-bottom:3px solid #FFE600;padding:14px 20px;display:flex;align-items:center;gap:14px;border-radius:12px;margin-bottom:20px">\n'+
+    '  <div><div style="font-size:24px;font-weight:900;color:#FFE600;font-style:italic;letter-spacing:-2px">WA</div>'+
+    '<span style="font-size:7px;color:#FFE600;letter-spacing:3px;font-weight:800;display:block">WORKOUT_ANT</span></div>\n'+
+    '  <div style="width:48px;height:48px;border-radius:50%;background:#FFE600;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#000;flex-shrink:0;margin-left:8px">'+initials2(student.name)+'</div>\n'+
+    '  <div>\n    <div style="font-size:20px;font-weight:700">'+student.name+'</div>\n'+
+    (subHtml?'    <div style="margin-top:3px">'+subHtml+'</div>\n':'')+
+    '  </div>\n</div>\n'+
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px">\n'+cardsHtml+'\n</div>\n'+
+    '<div style="background:#242424;border-radius:12px;padding:16px;border:1px solid #333">\n'+
+    '  <h3 style="color:#FFE600;font-size:14px;font-weight:700;margin-bottom:12px">📋 История тестирований</h3>\n'+
+    histHtml+'\n</div>\n'+
+    '<div style="text-align:center;color:#444;font-size:11px;margin-top:20px">Сформировано: '+today+' · WORKOUT_ANT Нормативы</div>\n'+
+    '</body>\n</html>';
+
+  const blob=new Blob([parentHtml],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=(student.name||'student').replace(/\s+/g,'_')+'_результаты.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+
+</script>
+
+<!-- ══ LOGIN OVERLAY ══════════════════════════════════════════════════ -->
+<div id="login-overlay" class="login-overlay">
+  <div class="login-box">
+    <div style="margin-bottom:20px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" style="width:160px;height:auto;display:block;margin:0 auto"><text x="0" y="44" font-family="Arial Black,Impact,sans-serif" font-weight="900" font-style="italic" font-size="50" fill="#FFE600" letter-spacing="-3">WA</text><text x="3" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="10" fill="#FFE600" letter-spacing="4">WORKOUT_ANT</text></svg></div>
+    <div class="login-title">Выберите роль</div>
+    <div class="login-role-grid">
+      <button class="login-role-btn" id="role-btn-admin" onclick="selectLoginRole('admin')">
+        <span class="role-icon">👑</span>Администратор
+      </button>
+      <button class="login-role-btn" id="role-btn-trainer" onclick="selectLoginRole('trainer')">
+        <span class="role-icon">🏋️</span>Тренер
+      </button>
+      <button class="login-role-btn" id="role-btn-client" onclick="selectLoginRole('client')">
+        <span class="role-icon">👨‍👩‍👧</span>Родитель
+      </button>
+    </div>
+    <div id="login-area-pin" style="display:none" class="login-input-row">
+      <input type="password" id="login-pin" placeholder="PIN" style="text-align:center;font-size:18px;letter-spacing:4px">
+      <button class="btn btn-primary" onclick="submitLogin()">Войти</button>
+    </div>
+    <div id="login-area-code" style="display:none" class="login-input-row">
+      <input type="text" id="login-code" placeholder="Код ребёнка (6 символов)" style="text-align:center;font-size:18px;letter-spacing:4px;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+      <button class="btn btn-primary" onclick="submitLogin()">Посмотреть результаты</button>
+    </div>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-hint" id="login-hint"></div>
+  </div>
+</div>
+
+<!-- ══ SETTINGS MODAL (admin only) ════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-settings">
+  <div class="modal" style="max-width:480px">
+    <h3>⚙️ Настройки доступа</h3>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">PIN администратора</label>
+      <input type="password" id="set-admin-pin" placeholder="Введите новый PIN (мин. 4 символа)">
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="form-label">PIN тренера</label>
+      <input type="password" id="set-trainer-pin" placeholder="Введите новый PIN (мин. 4 символа)">
+    </div>
+    <div class="alert alert-ok" style="font-size:12px;margin-bottom:6px">
+      💡 После смены PIN вы будете разлогинены
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-settings')">Отмена</button>
+      <button class="btn btn-primary" onclick="saveAuthSettings()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
